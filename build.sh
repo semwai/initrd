@@ -29,7 +29,7 @@ mkdir bin dev etc home mnt proc sys usr
 # htop..
 cp ../../artefacts/htop/htop usr/bin/
 mkdir -p lib/terminfo
-cp -r /lib/terminfo/. lib/terminfo
+cp -r ../../configs/terminfo/. lib/terminfo
 
 
 popd
