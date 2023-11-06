@@ -20,4 +20,14 @@ mknod /dev/ptmx c 5 2
 mknod /dev/mem c 1 1
 
 mknod /dev/watchdog c 10 130
+mknod /dev/fb0 c 29 0
+
+mkdir /dev/input
+mknod /dev/input/mice c 13 63
+mknod /dev/input/mouse0 c 13 32
+
+#dd if=/dev/urandom of=/dev/fb0 count=1024 bs=1024
+
+
+ip link set eth0 up
 exec /bin/sh

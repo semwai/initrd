@@ -1,11 +1,10 @@
 # kernel
-pushd artefacts/linux-kernel
+#pushd artefacts/linux-kernel
+cp configs/kernel/.config artefacts/linux-kernel
+#make defconfig
+#make kvm_guest.config
 
-make defconfig
-make kvm_guest.config
-
-
-popd
+#popd
 
 # busybox
 pushd artefacts/busybox

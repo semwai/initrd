@@ -5,7 +5,7 @@ make -j$(nproc)
 popd
 
 cp artefacts/linux-kernel/arch/x86/boot/bzImage build
-
+# cp artefacts/linux-kernel/drivers/video/fbdev/core/fb.ko build/rootfs/lib
 ### BUSYBOX
 pushd artefacts/busybox
 make -j$(nproc)
@@ -31,10 +31,10 @@ cp ../../artefacts/htop/htop usr/bin/
 mkdir -p lib/terminfo
 cp -r ../../configs/terminfo/. lib/terminfo
 
-
 popd
 
 cp configs/init build/rootfs
+cp -r configs/etc/. build/rootfs/etc
 
 pushd build/rootfs
 find . -print0 | cpio --null -ov --format=newc > ../initramfs.cpio 

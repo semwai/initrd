@@ -1,4 +1,4 @@
-KERNEL_VERSION=6.5.2
+KERNEL_VERSION=4.9.126
 KERNEL_GZ=linux-${KERNEL_VERSION}.tar.xz  
 BUSY_VERSION=1.36.1
 BUSY_GZ=busybox-${BUSY_VERSION}.tar.bz2
@@ -10,7 +10,7 @@ mkdir -p artefacts
 pushd artefacts
 
 if [ ! -e "$KERNEL_GZ" ] ; then
-    wget https://cdn.kernel.org/pub/linux/kernel/v6.x/${KERNEL_GZ}
+    wget https://cdn.kernel.org/pub/linux/kernel/v4.x/${KERNEL_GZ}
     tar xf ${KERNEL_GZ}
     mv linux-${KERNEL_VERSION} linux-kernel
 else
