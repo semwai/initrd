@@ -1,4 +1,5 @@
 #include "include/fb.hpp"
+#include "include/font8x8_basic.hpp"
 
 #include <fmt/format.h>
 #include <stdio.h>
@@ -35,9 +36,36 @@ tl::expected<void, std::string> Framebuffer::init_fb() {
 }
 
 void Framebuffer::put_pixel(Pos pos, Color c) {
+    assert (pos.x >= 0 && pos.x < vinfo.xres && pos.y >= 0 && pos.y < vinfo.yres);
+
     auto offset = (pos.y * vinfo.xres + pos.x) * 4;
     f[offset + 0] = c.b;
     f[offset + 1] = c.g;
     f[offset + 2] = c.r;
     f[offset + 3] = c.a;
+}
+
+void Framebuffer::put_rectangle(Pos pos1, Pos pos2, Color c) {
+    for (auto i{pos1.y}; i < pos2.y; ++i) {
+        for (auto j{pos1.x}; j < pos2.x; ++j) {
+            auto offset = (i * vinfo.xres + j) * 4;
+            f[offset + 0] = c.b;
+            f[offset + 1] = c.g;
+            f[offset + 2] = c.r;
+            f[offset + 3] = c.a;
+        }
+    }
+}
+
+void Framebuffer::put_char(Pos pos, char s, Color c) {
+
+    int set;
+    for (int y=0; y < 8; ++y) {
+        for (int x=0; x < 8; ++x) {
+            set = font8x8_basic[s][y] & static_cast<unsigned char>(1 << x);
+            if (set) {
+                put_pixel(Pos(pos.x + x, pos.y + y), c);
+            }
+        }
+    }
 }

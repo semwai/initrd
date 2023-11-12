@@ -6,19 +6,23 @@ int main() {
     
     auto &fb = Framebuffer::getInstance();
 
-    for (unsigned int i{256}; i < 512; ++i) {
-        for (unsigned int j{256}; j < 512; ++j) {
-            fb.put_pixel({.x = j, .y = i}, {.r=255, .g=255, .b=0});
+    for (auto i{0}; i < 256; ++i) {
+        fb.put_rectangle(Pos(i, i), Pos(600 - i, 600 - i), Color::Grey(i));
+    }
+    
+    fb.put_rectangle(Pos(0, 0), Pos(400, 400), Color::Red());
+    fb.put_rectangle(Pos(100, 100), Pos(500, 500), Color::Green());
+    fb.put_rectangle(Pos(200, 200), Pos(600, 600), Color::Blue());
+
+    for (auto i{256}; i < 512; ++i) {
+        for (auto j{256}; j < 512; ++j) {
+            fb.put_pixel(Pos(j, i), Color(i*j, 0, 0));
         }
     }
+
+    std::string str = "Hello world!!!!!!!";
+    for (auto i{0}; i < str.length(); ++i) {
+        fb.put_char(Pos(i * 8, 700), str[i], Color::Green());
+    }
+
 }
-
-/*
-
-cp build/main ../../build/rootfs/
-pushd ../../build/rootfs
-find . -print0 | cpio --null -ov --format=newc > ../initramfs.cpio 
-gzip ../initramfs.cpio
-popd
-
-*/
