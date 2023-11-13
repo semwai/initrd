@@ -18,7 +18,7 @@ FetchContent_MakeAvailable(expected)
 
 find_package(fmt)
 
-add_library(fb fb.cpp)
+add_library(fb fb.cpp guitext.cpp)
 target_link_libraries(fb PUBLIC fmt::fmt-header-only)
 
 target_link_libraries(fb PUBLIC expected)

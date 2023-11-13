@@ -1,14 +1,15 @@
 #include "include/fb.hpp"
 #include "include/font8x8_basic.hpp"
 
-#include <fmt/format.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
+#include <cstring>
 #include <sys/mman.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <sys/ioctl.h>
+#include <fmt/format.h>
+
+
+#include <chrono>
+#include <thread>
 
 tl::expected<void, std::string> Framebuffer::init_fb() {
     auto fb0 = open("/dev/fb0", O_RDWR);
@@ -45,9 +46,9 @@ void Framebuffer::put_pixel(Pos pos, Color c) {
     f[offset + 3] = c.a;
 }
 
-void Framebuffer::put_rectangle(Pos pos1, Pos pos2, Color c) {
-    for (auto i{pos1.y}; i < pos2.y; ++i) {
-        for (auto j{pos1.x}; j < pos2.x; ++j) {
+void Framebuffer::put_rectangle(Rectange rec, Color c) {
+    for (auto i{rec.start.y}; i < rec.end.y; ++i) {
+        for (auto j{rec.start.x}; j < rec.end.x; ++j) {
             auto offset = (i * vinfo.xres + j) * 4;
             f[offset + 0] = c.b;
             f[offset + 1] = c.g;
@@ -68,4 +69,19 @@ void Framebuffer::put_char(Pos pos, char s, Color c) {
             }
         }
     }
+}
+
+void Framebuffer::copy_up(Rectange rec, uint x) {
+
+    auto w = (vinfo.xres) * (vinfo.bits_per_pixel / 8);
+    
+    auto f_offset = f + (rec.start.y * vinfo.xres + rec.start.x) * 4;
+
+    auto h = rec.end.y - rec.start.y;
+
+
+    for (auto i{0}; i < h; ++i) {
+        std::memmove(f_offset + w*i , f_offset + w*(i + x), w);
+    }
+    
 }
